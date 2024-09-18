@@ -1,5 +1,7 @@
 package com.micro.paymentservice.externalConnectorImpl.publisherImpl;
 
+import com.micro.paymentService.PaymentFailRequest;
+import com.micro.paymentService.PaymentSuccessRequest;
 import com.micro.paymentservice.externalConnector.publisher.PaymentPublisher;
 import com.micro.paymentservice.externalConnector.publisher.PaymentPublisherManager;
 import com.micro.paymentservice.util.common.PaymentPublisherMessage;
@@ -26,18 +28,18 @@ public class PaymentPublisherManagerImpl implements PaymentPublisherManager {
     }
 
     private void publishPaymentSuccessMessage(PaymentPublisherMessage paymentPublisherMessage){
-        PaymentSuccessPublisherMessage paymentSuccessPublisherMessage =PaymentSuccessPublisherMessage.builder()
-                .sagaId(paymentPublisherMessage.getSagaId())
+        PaymentSuccessRequest paymentSuccessRequest =PaymentSuccessRequest.newBuilder()
+                .setSagaId(paymentPublisherMessage.getSagaId())
                 .build();
 
-        paymentPublisher.publishPaymentSuccessMessage(paymentSuccessPublisherMessage);
+        paymentPublisher.publishPaymentSuccessMessage(paymentSuccessRequest);
     }
 
     private void publishPaymentFailMessage(PaymentPublisherMessage paymentPublisherMessage){
-        PaymentErrorPublisherMessage paymentErrorPublisherMessage = PaymentErrorPublisherMessage.builder()
-                .sagaId(paymentPublisherMessage.getSagaId())
+        PaymentFailRequest paymentFailRequest = PaymentFailRequest.newBuilder()
+                .setSagaId(paymentPublisherMessage.getSagaId())
                 .build();
 
-        paymentPublisher.publishPaymentFailMessage(paymentErrorPublisherMessage);
+        paymentPublisher.publishPaymentFailMessage(paymentFailRequest);
     }
 }
